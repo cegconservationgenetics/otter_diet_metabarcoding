@@ -220,6 +220,6 @@ For each primer-class combination, the pipeline generates:
 
 Performance typically decreases from kingdom level (highest) to species level (lowest), which is expected due to increased taxonomic resolution requirements.
 
-## 4. 
+## 4. Blocking Primer Design and Evaluation
 
 
