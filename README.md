@@ -8,18 +8,18 @@ This step retrieves curated reference sequences for key mitochondrial genes — 
 gene_queries["16S"] = '(16S[Title] OR 16s[Title] OR rrn16[Title] OR rrnA[Title] OR rrnB[Title] OR lrRNA[Title] OR "l-rRNA"[Title] OR mtDNA[Title] OR mitochondrial[Title] OR mitochondrion[Title] OR "mt-rRNA"[Title] OR "mt-rrnL"[Title])'
 gene_queries["COI"] = '(COI[Title] OR CO1[Title] OR "cytochrome oxidase I"[Title] OR "cytochrome c oxidase subunit I"[Title] OR "cytochrome c oxidase I"[Title] OR cox1[Title] OR coxi[Title] OR "COX subunit 1"[Title] OR mtDNA[Title] OR mitochondrial[Title] OR mitochondrion[Title] OR "mt-co1"[Title] OR "mt-coI"[Title] OR "mt-rRNA"[Title])'</code></pre>
 
-### Target Taxonomic Groups
-We focus on diverse eukaryotic groups of ecological interest:
-#Vertebrate
-<pre><code>
-"Actinopterygii"  # Ray-finned fishes
+**Target Taxonomic Groups**
+We focus on diverse eukaryotic groups relevant to otter and carnivorous diet analysis
+
+**Vertebrate**
+<pre><code>"Actinopterygii"  # Ray-finned fishes
 "Amphibia"        # Amphibians
 "Mammalia"        # Mammals
 "Aves"            # Birds
 "Crocodylia"      # Crocodilians (Reptilia)
 "Lepidosauria"    # Lizards and snakes (Reptilia)
-"Testudines"      # Turtles (Reptilia)</code></pre>
-#Invertebrate
+"Testudines"      # Turtles (Reptilia)</code></pre> 
+**Invertebrate**
 <pre><code>"Arachnida"       # Scorpions and spiders
 "Insecta"         # Insects
 "Bivalvia"        # Clams, oysters
@@ -27,4 +27,4 @@ We focus on diverse eukaryotic groups of ecological interest:
 "Clitellata"      # Earthworms and leeches
 "Malacostraca"    # Crabs, shrimps</code></pre>
 
-⚠️ Note: Although Reptilia is a valid class taxonomically, NCBI does not consistently classify all reptiles under this term. Instead, use subgroups: Crocodylia, Lepidosauria, and Testudines.
+⚠️ Note: Although Reptilia is a valid taxonomic class, NCBI does not consistently classify all reptiles under this term. Instead, reptiles are often split into subgroups such as Crocodylia, Lepidosauria, and Testudines. After retrieving sequences, we merge Crocodylia, Lepidosauria, and Testudines into Reptilia for downstream analysis.
