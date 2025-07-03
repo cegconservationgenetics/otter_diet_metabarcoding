@@ -1,7 +1,7 @@
 # CEG - Otter Diet Metabarcoding Project
 DNA Metabarcoding-based diet diversity and niche differences of otters in Thailand
 
-## 1. Retrieve Reference Sequences from NCBI Using QIIME 2
+## 1. Retrieve Reference Sequences from NCBI Using QIIME 2 (1_download_reference_sequence.sh)
 This step retrieves curated reference sequences for key mitochondrial genes — 12S, 16S, and COI — from NCBI, using flexible query strings that include multiple gene name synonyms. This ensures broad and accurate capture of target sequences across diverse taxonomic groups for metabarcoding studies.
 
 <pre><code>gene_queries["12S"] = '(12S[Title] OR 12s[Title] OR "s-rRNA"[Title] OR rrn12[Title] OR rrnS[Title] OR rrns[Title] OR srRNA[Title] OR "small subunit ribosomal RNA"[Title] OR "small ribosomal RNA subunit"[Title] OR mtDNA[Title] OR mitochondrial[Title] OR mitochondrion[Title] OR "mt-rRNA"[Title] OR "mt-rrnS"[Title])'
@@ -50,20 +50,19 @@ This query searches NCBI for sequences from the specified organism group ($group
 ├── ...
 ├── 16S_Aves_qiime_download.log</code></pre>
 
-## 2. Primer Evaluation
+## 2. CRABS Insilico PCR (2_crabs_insilico_pcr.py)
+**Overview**
+We use CRABS (Computational Rapid Amplicon Binding Simulator) to perform in silico PCR and evaluate the expected amplicon size distribution for each candidate primer set across different taxonomic groups. This step helps confirm that primers amplify within the expected size range, identify size variability across taxa, and screen for non-target amplification or unintended products. Results are summarized using dot plots that show amplicon length distributions for each primer.
 
-**Overview**<br>
-This primer evaluation pipeline assesses the performance of DNA metabarcoding primers for taxonomic classification using QIIME 2 and RESCRIPt.
-It estimates:
-- **Binding capacity**: how many reference sequences are amplified by each primer set.
-- **Taxonomic resolution**: how effectively each primer recovers taxonomic labels (e.g., kingdom to species levels).
+**Usage**
+<pre><code># Basic syntax
+python3 crabs_insilico_pcr.py <gene> [options]
 
-The goal is to identify effective DNA metabarcoding primers by evaluating their binding coverage and taxonomic resolution, supporting accurate and efficient detection of target taxa in ecological studies such as diet analysis and biodiversity monitoring.<br>
-
-**Requirements**
-- QIIME 2 (with RESCRIPt plugin)
-- Python 3 (with pandas, matplotlib, numpy)
-- Input databases in QIIME 2 format (.qza files)
+# Examples
+python3 crabs_insilico_pcr.py 12s                           # All 12S primers
+python3 crabs_insilico_pcr.py 16s --primer 16S_MarVer3      # Specific 16S primer  
+python3 crabs_insilico_pcr.py coi --mismatch 15.0           # COI with custom mismatch tolerance
+python3 crabs_insilico_pcr.py 12s --plot-only               # Generate plots only</code></pre>
 
 **Primer candidate**
 |Gene| Target | Primer F | Fw Sequence | Primer R | Re Sequence | Amplicon Size | Reference |
@@ -78,6 +77,65 @@ The goal is to identify effective DNA metabarcoding primers by evaluating their 
 |COI| Fish   | coi.175f | GGAGGCTTTGGMAAYTGRYT | coi.345r | TAGAGGRGGGTARACWGTYCA | 130 - 170 (inc.pm) | Collins et al. 2019 (Ta=53) |
 |COI| Fish   | L2513    | GCCTGTTTACCAAAAACATCA | H2714 | CTCCATAGGGTCTTCTCGTCTT | 250 (inc.pm) | Kitano et al. 2007 (Ta=55) |
 
+**Amplicon Size Distribution Workflow Steps**
+
+**1. Input Preparation**
+- Reads taxonomic class-specific FASTA files (*_sequences.fasta)
+- Processes each class separately for comprehensive coverage
+- Supports multiple gene regions with appropriate primer sets
+
+**2. Mismatch Calculation**
+- Calculates allowed mismatches based on primer length and tolerance percentage
+- Default: 10% of average primer pair length
+- Accounts for primer degeneracies and biological sequence variation
+
+**3. In Silico PCR Amplification**
+- Uses CRABS insilico_pcr command to simulate PCR amplification
+- Searches for forward and reverse primer binding sites
+- Extracts sequences between primer pairs (amplicons)
+- Applied per primer-class combination
+
+**4. Quality Control**
+- Identifies and removes empty output files (no successful amplifications)
+- Counts sequences successfully amplified per primer-class combination
+- Logs detailed processing information for troubleshooting
+
+**5. Amplicon Size Analysis**
+- Extracts sequence lengths from all amplified products
+- Generates comprehensive statistics (min, max, mean lengths)
+- Categorizes sequences by size thresholds for visualization
+
+**6. Dot Plot Visualization**
+- Creates scatter plots showing amplicon size distribution
+- X-axis: Sequence length (bp, capped at 1000 bp for readability)
+- Y-axis: Sequence number (ordered by input)
+- Color coding: Blue (≤1000 bp), Red (>1000 bp)
+
+**7. Statistical Summary**
+- Total sequence count
+- Size distribution breakdown
+- Length statistics (min/max/mean)
+- Visual quality assessment
+
+**Example Amplicon Size Distribution Output**<br>
+![coi 175f 345r_actinopteri_dot_plot](https://github.com/user-attachments/assets/bf3a5f7e-79a2-4f5b-b497-929f7857ac54)
+
+
+## 3. Primer Evaluation (3_primer_evaluation.sh)
+
+**Overview**<br>
+This primer evaluation pipeline assesses the performance of DNA metabarcoding primers for taxonomic classification using QIIME 2 and RESCRIPt.
+It estimates:
+- **Binding capacity**: how many reference sequences are amplified by each primer set.
+- **Taxonomic resolution**: how effectively each primer recovers taxonomic labels (e.g., kingdom to species levels).
+
+The goal is to identify effective DNA metabarcoding primers by evaluating their binding coverage and taxonomic resolution, supporting accurate and efficient detection of target taxa in ecological studies such as diet analysis and biodiversity monitoring.<br>
+
+**Requirements**
+- QIIME 2 (with RESCRIPt plugin)
+- Python 3 (with pandas, matplotlib, numpy)
+- Input databases in QIIME 2 format (.qza files)
+
 **Usage**
 <pre><code># Basic syntax
 ./primer_evaluation.sh <gene> [primer_name] [class_name]
@@ -87,7 +145,7 @@ The goal is to identify effective DNA metabarcoding primers by evaluating their 
 ./primer_evaluation.sh 16S 16S_MarVer3F_MarVer3R     # Specific 16S primer, all classes
 ./primer_evaluation.sh COI COI_VF2_FishR1 Reptile    # Specific primer and class</code></pre>
 
-**Primer Evaluation Pipeline Steps**<br>
+**Primer Evaluation Workflow Steps**<br>
 **1) Initial Dereplication (1st derep)**
 - Removes duplicate sequences from input database
 - Maintains taxonomic assignments for unique sequences
@@ -161,5 +219,7 @@ For each primer-class combination, the pipeline generates:
 - **< 0.5**: Poor performance, primer may not be suitable
 
 Performance typically decreases from kingdom level (highest) to species level (lowest), which is expected due to increased taxonomic resolution requirements.
+
+## 4. 
 
 
