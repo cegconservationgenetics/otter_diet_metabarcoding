@@ -1,4 +1,4 @@
-# CEG - Otter Diet Metabarcoding Project
+![image](https://github.com/user-attachments/assets/3a52a755-0dad-46e2-a60b-e984e7abf66b)# CEG - Otter Diet Metabarcoding Project
 DNA Metabarcoding-based diet diversity and niche differences of otters in Thailand
 
 ## 1. Retrieve Reference Sequences from NCBI Using QIIME 2
@@ -52,6 +52,18 @@ This query searches NCBI for sequences from the specified organism group ($group
 
 ## 2. Primer Evaluation
 
+**Overview**<br>
+This primer evaluation pipeline assesses the performance of DNA metabarcoding primers for taxonomic classification using QIIME 2 and RESCRIPt.
+It estimates:
+- **Binding capacity**: how many reference sequences are amplified by each primer set.
+- **Taxonomic resolution**: how effectively each primer recovers taxonomic labels (e.g., kingdom to species levels).
+
+The goal is to identify effective DNA metabarcoding primers by evaluating their binding coverage and taxonomic resolution, supporting accurate and efficient detection of target taxa in ecological studies such as diet analysis and biodiversity monitoring.<br>
+
+![image](https://github.com/user-attachments/assets/b644aa7d-7041-4771-b9f2-45313e68c0cf)
+
+
+**Primer candidate**
 |Gene| Target | Primer F | Fw Sequence | Primer R | Re Sequence | Amplicon Size | Reference |
 |-----|--------|----------|-------------|----------|-------------|---------------|-----------|
 |12s| Vertebrate + Invertebrate | 12Sv5Fw | TTAGATACCCCACTATGC | 12Sv5Re | TAGAACAGGCTCCTCTAG | 100 - 137 (inc. pm) | Riaz et al. 2011 (Ta=52), adopted by Kumari et al. 2019 (Ta=50) |
@@ -63,3 +75,121 @@ This query searches NCBI for sequences from the specified organism group ($group
 |16s| Fish + Marine Mammal | MarVer3F | AGACGAGAAGACCCTRTG | MarVer3R | GGATTGCGCTGTTATCCC | 245 - 285 (inc.pm) | Valsecchi et al. 2020 |
 |COI| Fish   | coi.175f | GGAGGCTTTGGMAAYTGRYT | coi.345r | TAGAGGRGGGTARACWGTYCA | 130 - 170 (inc.pm) | Collins et al. 2019 (Ta=53) |
 |COI| Fish   | L2513    | GCCTGTTTACCAAAAACATCA | H2714 | CTCCATAGGGTCTTCTCGTCTT | 250 (inc.pm) | Kitano et al. 2007 (Ta=55) |
+
+## Usage
+
+```bash
+# Basic syntax
+./primer_evaluation.sh <gene> [primer_name] [class_name]
+
+# Examples
+./primer_evaluation.sh 12S                                    # All 12S primers, all classes
+./primer_evaluation.sh 16S 16S_MarVer3F_MarVer3R             # Specific 16S primer, all classes
+./primer_evaluation.sh COI COI_VF2_FishR1 Reptile            # Specific primer and class
+```
+
+## Evaluation Pipeline Steps
+
+### 1. **Initial Dereplication**
+- Removes duplicate sequences from input database
+- Maintains taxonomic assignments for unique sequences
+- Uses `qiime rescript dereplicate` with 'uniq' mode
+
+### 2. **Primer-Based Read Extraction**
+- Extracts sequences that match forward and reverse primer sequences
+- Uses 80% identity threshold for primer matching
+- Simulates PCR amplification *in silico*
+
+### 3. **Post-Extraction Dereplication**
+- Second round of deduplication after primer extraction
+- Ensures only unique amplicon sequences remain
+
+### 4. **Sequence Quality Control**
+- **Cull sequences**: Removes sequences with excessive degenerates (>5) and long homopolymers (>8bp)
+- **Length filtering**: Retains only sequences within expected amplicon size ranges
+- Filters out sequences likely to cause classification errors
+
+### 5. **Final Dereplication**
+- Third and final deduplication step
+- Produces clean, non-redundant reference database
+
+### 6. **Data Export and Processing**
+- Exports sequences and taxonomy from QIIME 2 artifacts (.qza) to standard formats
+- Creates FASTA files with integrated taxonomic information
+- Generates sequence statistics (count, length distribution)
+
+### 7. **Performance Evaluation**
+
+#### Sequence Assessment
+- Evaluates sequence quality and composition
+- Generates summary statistics and visualizations
+
+#### Taxonomic Coverage Analysis  
+- Assesses taxonomic representation across different levels
+- Identifies gaps in taxonomic coverage
+
+#### Cross-Validation Testing
+- Trains naive Bayes classifier using processed sequences
+- Performs k-fold cross-validation to test classification accuracy
+- Generates F-measure scores across taxonomic levels (kingdom → species)
+
+### 8. **Results Visualization**
+- **Performance plots**: F-measure scores across taxonomic levels
+- **Error bar plots**: Include confidence intervals/standard errors
+- **PNG exports**: Publication-ready visualizations of sequence quality metrics
+
+## Output Files
+
+For each primer-class combination, the pipeline generates:
+
+| File Type | Description |
+|-----------|-------------|
+| `*_derep3.fasta` | Final processed sequences |
+| `*_taxonomy.tsv` | Taxonomic assignments |
+| `*_with_taxonomy.fasta` | FASTA with taxonomy in headers |
+| `*_sequence_stats.txt` | Sequence count and length statistics |
+| `primer_evaluation_*.tsv` | Cross-validation results |
+| `*_plot.png` | Performance visualization |
+| `*_plot_stderrorbar.png` | Performance plot with error bars |
+| `*_evaluation.log` | Detailed processing log |
+
+## Supported Primers
+
+### 12S rRNA
+- `12S_12SV5F_12SV5R` (80-105 bp)
+- `12S_tele02F_tele02R` (140-200 bp)  
+- `12S_teleoF_teleoRdeg` (50-100 bp)
+- `12S_MiFish-U-F_MiFish-U-R` (150-200 bp)
+
+### 16S rRNA
+- `16S_Vert-16S-eDNA-F1_Vert-16S-eDNA-R1` (150-260 bp)
+- `16S_MarVer3F_MarVer3R` (100-250 bp)
+
+### COI
+- `COI_VF2_FishR1` (650-670 bp)
+- `COI_coi.175f_coi.345r` (120-140 bp)
+- `COI_L2513_H2714` (175-230 bp)
+
+## Requirements
+
+- QIIME 2 (with RESCRIPt plugin)
+- Python 3 (with pandas, matplotlib, numpy)
+- Input databases in QIIME 2 format (.qza files)
+
+## Key Features
+
+- **Automated processing**: Complete pipeline from raw sequences to evaluation metrics
+- **Multi-gene support**: Handles different gene regions with appropriate parameters
+- **Robust error handling**: Cleanup procedures for failed runs
+- **Comprehensive logging**: Detailed logs for troubleshooting
+- **Publication-ready outputs**: High-quality plots and summary statistics
+
+## Interpretation
+
+**F-measure scores** range from 0-1, where:
+- **> 0.9**: Excellent classification performance
+- **0.7-0.9**: Good performance  
+- **0.5-0.7**: Moderate performance
+- **< 0.5**: Poor performance, primer may not be suitable
+
+Performance typically decreases from kingdom level (highest) to species level (lowest), which is expected due to increased taxonomic resolution requirements.
