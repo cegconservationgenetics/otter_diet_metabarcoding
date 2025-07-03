@@ -1,4 +1,4 @@
-![image](https://github.com/user-attachments/assets/3a52a755-0dad-46e2-a60b-e984e7abf66b)# CEG - Otter Diet Metabarcoding Project
+# CEG - Otter Diet Metabarcoding Project
 DNA Metabarcoding-based diet diversity and niche differences of otters in Thailand
 
 ## 1. Retrieve Reference Sequences from NCBI Using QIIME 2
@@ -60,7 +60,8 @@ It estimates:
 
 The goal is to identify effective DNA metabarcoding primers by evaluating their binding coverage and taxonomic resolution, supporting accurate and efficient detection of target taxa in ecological studies such as diet analysis and biodiversity monitoring.<br>
 
-![image](https://github.com/user-attachments/assets/b644aa7d-7041-4771-b9f2-45313e68c0cf)
+**Example Primer Evaluation Output**<br>
+![image](https://github.com/user-attachments/assets/a2b9f102-2ad3-4f2d-9dcf-6b27d7447665)
 
 
 **Primer candidate**
@@ -78,15 +79,14 @@ The goal is to identify effective DNA metabarcoding primers by evaluating their 
 
 ## Usage
 
-```bash
+<pre><code>
 # Basic syntax
 ./primer_evaluation.sh <gene> [primer_name] [class_name]
 
 # Examples
-./primer_evaluation.sh 12S                                    # All 12S primers, all classes
-./primer_evaluation.sh 16S 16S_MarVer3F_MarVer3R             # Specific 16S primer, all classes
-./primer_evaluation.sh COI COI_VF2_FishR1 Reptile            # Specific primer and class
-```
+./primer_evaluation.sh 12S                           # All 12S primers, all classes
+./primer_evaluation.sh 16S 16S_MarVer3F_MarVer3R     # Specific 16S primer, all classes
+./primer_evaluation.sh COI COI_VF2_FishR1 Reptile    # Specific primer and class</code></pre>
 
 ## Evaluation Pipeline Steps
 
