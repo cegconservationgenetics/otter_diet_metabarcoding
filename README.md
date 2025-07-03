@@ -60,9 +60,10 @@ It estimates:
 
 The goal is to identify effective DNA metabarcoding primers by evaluating their binding coverage and taxonomic resolution, supporting accurate and efficient detection of target taxa in ecological studies such as diet analysis and biodiversity monitoring.<br>
 
-**Example Primer Evaluation Output**<br>
-![image](https://github.com/user-attachments/assets/a2b9f102-2ad3-4f2d-9dcf-6b27d7447665)
-
+**Requirements**
+- QIIME 2 (with RESCRIPt plugin)
+- Python 3 (with pandas, matplotlib, numpy)
+- Input databases in QIIME 2 format (.qza files)
 
 **Primer candidate**
 |Gene| Target | Primer F | Fw Sequence | Primer R | Re Sequence | Amplicon Size | Reference |
@@ -77,10 +78,8 @@ The goal is to identify effective DNA metabarcoding primers by evaluating their 
 |COI| Fish   | coi.175f | GGAGGCTTTGGMAAYTGRYT | coi.345r | TAGAGGRGGGTARACWGTYCA | 130 - 170 (inc.pm) | Collins et al. 2019 (Ta=53) |
 |COI| Fish   | L2513    | GCCTGTTTACCAAAAACATCA | H2714 | CTCCATAGGGTCTTCTCGTCTT | 250 (inc.pm) | Kitano et al. 2007 (Ta=55) |
 
-## Usage
-
-<pre><code>
-# Basic syntax
+**Usage**
+<pre><code># Basic syntax
 ./primer_evaluation.sh <gene> [primer_name] [class_name]
 
 # Examples
@@ -88,57 +87,56 @@ The goal is to identify effective DNA metabarcoding primers by evaluating their 
 ./primer_evaluation.sh 16S 16S_MarVer3F_MarVer3R     # Specific 16S primer, all classes
 ./primer_evaluation.sh COI COI_VF2_FishR1 Reptile    # Specific primer and class</code></pre>
 
-## Evaluation Pipeline Steps
-
-### 1. **Initial Dereplication**
+**Primer Evaluation Pipeline Steps**<br>
+**1) Initial Dereplication (1st derep)**
 - Removes duplicate sequences from input database
 - Maintains taxonomic assignments for unique sequences
 - Uses `qiime rescript dereplicate` with 'uniq' mode
 
-### 2. **Primer-Based Read Extraction**
+**2. Primer-Based Read Extraction**
 - Extracts sequences that match forward and reverse primer sequences
 - Uses 80% identity threshold for primer matching
 - Simulates PCR amplification *in silico*
 
-### 3. **Post-Extraction Dereplication**
+**3. Post-Extraction Dereplication (2nd derep)**
 - Second round of deduplication after primer extraction
 - Ensures only unique amplicon sequences remain
 
-### 4. **Sequence Quality Control**
+**4. Sequence Quality Control**
 - **Cull sequences**: Removes sequences with excessive degenerates (>5) and long homopolymers (>8bp)
 - **Length filtering**: Retains only sequences within expected amplicon size ranges
 - Filters out sequences likely to cause classification errors
 
-### 5. **Final Dereplication**
+**5. Final Dereplication (3rd derep)**
 - Third and final deduplication step
 - Produces clean, non-redundant reference database
 
-### 6. **Data Export and Processing**
+**6. Data Export and Processing**
 - Exports sequences and taxonomy from QIIME 2 artifacts (.qza) to standard formats
-- Creates FASTA files with integrated taxonomic information
+- Creates FASTA files with integrated taxonomic information **(for phylogenetic tree construction and inspection)**
 - Generates sequence statistics (count, length distribution)
 
-### 7. **Performance Evaluation**
+**7. Performance Evaluation**
 
-#### Sequence Assessment
+**Sequence Assessment**
 - Evaluates sequence quality and composition
 - Generates summary statistics and visualizations
 
-#### Taxonomic Coverage Analysis  
+**Taxonomic Coverage Analysis**
 - Assesses taxonomic representation across different levels
 - Identifies gaps in taxonomic coverage
 
-#### Cross-Validation Testing
+**Cross-Validation Testing**
 - Trains naive Bayes classifier using processed sequences
 - Performs k-fold cross-validation to test classification accuracy
 - Generates F-measure scores across taxonomic levels (kingdom → species)
 
-### 8. **Results Visualization**
+**8. Results Visualization**
 - **Performance plots**: F-measure scores across taxonomic levels
 - **Error bar plots**: Include confidence intervals/standard errors
 - **PNG exports**: Publication-ready visualizations of sequence quality metrics
 
-## Output Files
+**Output Files**
 
 For each primer-class combination, the pipeline generates:
 
@@ -153,38 +151,8 @@ For each primer-class combination, the pipeline generates:
 | `*_plot_stderrorbar.png` | Performance plot with error bars |
 | `*_evaluation.log` | Detailed processing log |
 
-## Supported Primers
-
-### 12S rRNA
-- `12S_12SV5F_12SV5R` (80-105 bp)
-- `12S_tele02F_tele02R` (140-200 bp)  
-- `12S_teleoF_teleoRdeg` (50-100 bp)
-- `12S_MiFish-U-F_MiFish-U-R` (150-200 bp)
-
-### 16S rRNA
-- `16S_Vert-16S-eDNA-F1_Vert-16S-eDNA-R1` (150-260 bp)
-- `16S_MarVer3F_MarVer3R` (100-250 bp)
-
-### COI
-- `COI_VF2_FishR1` (650-670 bp)
-- `COI_coi.175f_coi.345r` (120-140 bp)
-- `COI_L2513_H2714` (175-230 bp)
-
-## Requirements
-
-- QIIME 2 (with RESCRIPt plugin)
-- Python 3 (with pandas, matplotlib, numpy)
-- Input databases in QIIME 2 format (.qza files)
-
-## Key Features
-
-- **Automated processing**: Complete pipeline from raw sequences to evaluation metrics
-- **Multi-gene support**: Handles different gene regions with appropriate parameters
-- **Robust error handling**: Cleanup procedures for failed runs
-- **Comprehensive logging**: Detailed logs for troubleshooting
-- **Publication-ready outputs**: High-quality plots and summary statistics
-
-## Interpretation
+**Example Primer Evaluation Output**<br>
+![image](https://github.com/user-attachments/assets/a2b9f102-2ad3-4f2d-9dcf-6b27d7447665)
 
 **F-measure scores** range from 0-1, where:
 - **> 0.9**: Excellent classification performance
@@ -193,3 +161,5 @@ For each primer-class combination, the pipeline generates:
 - **< 0.5**: Poor performance, primer may not be suitable
 
 Performance typically decreases from kingdom level (highest) to species level (lowest), which is expected due to increased taxonomic resolution requirements.
+
+
