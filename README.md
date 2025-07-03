@@ -118,15 +118,15 @@ The goal is to identify effective DNA metabarcoding primers by evaluating their 
 
 **7. Performance Evaluation**
 
-**Sequence Assessment**
+**7.1) Sequence Assessment**
 - Evaluates sequence quality and composition
 - Generates summary statistics and visualizations
 
-**Taxonomic Coverage Analysis**
+**7.2) Taxonomic Coverage Analysis**
 - Assesses taxonomic representation across different levels
 - Identifies gaps in taxonomic coverage
 
-**Cross-Validation Testing**
+**7.3) Cross-Validation Testing**
 - Trains naive Bayes classifier using processed sequences
 - Performs k-fold cross-validation to test classification accuracy
 - Generates F-measure scores across taxonomic levels (kingdom → species)
