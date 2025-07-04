@@ -1,7 +1,10 @@
 # CEG - Otter Diet Metabarcoding Project
 DNA Metabarcoding-based diet diversity and niche differences of otters in Thailand
 
-## 1. Retrieve Reference Sequences from NCBI Using QIIME 2 (1_download_reference_sequence.sh)
+## 1. Retrieve Reference Sequences from NCBI Using QIIME 2
+**Script File**: [`1_download_reference_sequence.sh`](https://github.com/cegconservationgenetics/otter_diet_metabarcoding/blob/main/1_download_reference_sequence.sh)
+
+**Overview**<br>
 This step retrieves curated reference sequences for key mitochondrial genes — 12S, 16S, and COI — from NCBI, using flexible query strings that include multiple gene name synonyms. This ensures broad and accurate capture of target sequences across diverse taxonomic groups for metabarcoding studies.
 
 <pre><code>gene_queries["12S"] = '(12S[Title] OR 12s[Title] OR "s-rRNA"[Title] OR rrn12[Title] OR rrnS[Title] OR rrns[Title] OR srRNA[Title] OR "small subunit ribosomal RNA"[Title] OR "small ribosomal RNA subunit"[Title] OR mtDNA[Title] OR mitochondrial[Title] OR mitochondrion[Title] OR "mt-rRNA"[Title] OR "mt-rrnS"[Title])'
@@ -50,8 +53,12 @@ This query searches NCBI for sequences from the specified organism group ($group
 ├── ...
 ├── 16S_Aves_qiime_download.log</code></pre>
 
-## 2. CRABS Insilico PCR (2_crabs_insilico_pcr.py)
-**Overview**
+___
+
+## 2. CRABS Insilico PCR 
+**Script File**: [`2_crabs_insilico_pcr.py`](https://github.com/cegconservationgenetics/otter_diet_metabarcoding/blob/main/2_crabs_insilico_pcr.py)
+
+**Overview**<br>
 We use CRABS (Computational Rapid Amplicon Binding Simulator) to perform in silico PCR and evaluate the expected amplicon size distribution for each candidate primer set across different taxonomic groups. This step helps confirm that primers amplify within the expected size range, identify size variability across taxa, and screen for non-target amplification or unintended products. Results are summarized using dot plots that show amplicon length distributions for each primer.
 
 **Usage**
@@ -120,8 +127,10 @@ python3 crabs_insilico_pcr.py 12s --plot-only               # Generate plots onl
 **Example Amplicon Size Distribution Output**<br>
 ![coi 175f 345r_actinopteri_dot_plot](https://github.com/user-attachments/assets/bf3a5f7e-79a2-4f5b-b497-929f7857ac54)
 
+___
 
-## 3. Primer Evaluation (3_primer_evaluation.sh)
+## 3. Primer Evaluation
+**Script File**: [`3_primer_evaluation.sh`](https://github.com/cegconservationgenetics/otter_diet_metabarcoding/blob/main/3_primer_evaluation.sh)
 
 **Overview**<br>
 This primer evaluation pipeline assesses the performance of DNA metabarcoding primers for taxonomic classification using QIIME 2 and RESCRIPt.
