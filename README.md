@@ -155,7 +155,7 @@ The goal is to identify effective DNA metabarcoding primers by evaluating their 
 ./primer_evaluation.sh COI COI_VF2_FishR1 Reptile    # Specific primer and class</code></pre>
 
 **Primer Evaluation Workflow Steps**<br>
-**1) Initial Dereplication (1st derep)**
+**1. Initial Dereplication (1st derep)**
 - Removes duplicate sequences from input database
 - Maintains taxonomic assignments for unique sequences
 - Uses `qiime rescript dereplicate` with 'uniq' mode
