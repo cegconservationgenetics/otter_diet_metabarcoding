@@ -229,22 +229,21 @@ Performance typically decreases from kingdom level (highest) to species level (l
 
 **Overview**<br>
 
-**Blocking Primer Design Steps**<br>
-**1. Choose the mtg of otter and prey
-**2. 
-"Amphibia"        # Amphibians
-"Mammalia"        # Mammals
-"Aves"            # Birds
-"Crocodylia"      # Crocodilians (Reptilia)
-"Lepidosauria"    # Lizards and snakes (Reptilia)
-"Testudines"      # Turtles (Reptilia)</code></pre> 
-**Invertebrate**
-<pre><code>"Arachnida"       # Scorpions and spiders
-"Insecta"         # Insects
-"Bivalvia"        # Clams, oysters
-"Gastropoda"      # Snails
-"Clitellata"      # Earthworms and leeches
-"Malacostraca"    # Crabs, shrimps</code></pre>
+**Blocking Primer Design Steps**
+
+**1. Choose the mtg of otter and prey**
+
+**2. Evaluate canditate blocking primer and manual inspect to modify in Bioedit**
+
+**3. Generate blocking sequence table**
+
+**Potential Prey Species Dataset**<br>
+We manually selected 50 potential prey species commonly found in Thailand, spanning major taxonomic groups relevant to the diet of otters and other carnivores. 
+
+This curated dataset supports:
+- Blocking primer design and evaluation, ensuring primers differentiate host from prey.
+- In silico PCR simulations, testing amplification patterns across taxa.
+- Dietary metabarcoding sensitivity assessments, improving prey detection.
 
 **Host candidate sequence**
 | No. | Scientific Name         | Accession No. | Class     | Order      | Family       | Common Name                  |
@@ -310,3 +309,6 @@ Note: We used our mitochondrial genome (mtg) sequences of otters in Thailand, ba
 | 49  | *Crocodylus siamensis*       | DQ353946.1     | Sarcopterygii | Crocodylia       | Crocodylidae   | Siamese crocodile          |
 | 50  | *Amyda cartilaginea*         | MT039230.1     | Sarcopterygii | Testudines       | Trionychidae   | Asiatic Softshell Turtle   |
 
+Note: These prey species were selected to match ecological relevance, dietary reports, and presence in our surveyed sites.
+
+![image](https://github.com/user-attachments/assets/b9c6669c-bfba-444e-ad14-5cba0c23ac99)
