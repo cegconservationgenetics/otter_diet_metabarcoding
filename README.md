@@ -233,9 +233,9 @@ Performance typically decreases from kingdom level (highest) to species level (l
 
 **1. Choose the mtg of otter and prey**
 
-**2. Evaluate canditate blocking primer and manual inspect to modify in Bioedit**
+**2. Generate canditate blocking primer and manual inspect to modify in Bioedit**
 
-**3. Generate blocking sequence table**
+**3. Evaluate blocking primer and generate blocking sequence table**
 
 **Potential Prey Species Dataset**<br>
 We manually selected 50 potential prey species commonly found in Thailand, spanning major taxonomic groups relevant to the diet of otters and other carnivores. 
