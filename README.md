@@ -1,7 +1,7 @@
 # CEG - Otter Diet Metabarcoding Project
 DNA Metabarcoding-based diet diversity and niche differences of otters in Thailand
 
-## 1. Retrieve Reference Sequences from NCBI Using QIIME 2
+## 1. Retrieve Reference Sequences from NCBI
 **Script File**: [`1_download_reference_sequence.sh`](https://github.com/cegconservationgenetics/otter_diet_metabarcoding/blob/main/1_download_reference_sequence.sh)
 
 **Overview**<br>
