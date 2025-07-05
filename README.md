@@ -228,22 +228,14 @@ Performance typically decreases from kingdom level (highest) to species level (l
 **Script File**: [`xx`](xx)
 
 **Overview**<br>
+This comprehensive workflow covers the design, optimization, and evaluation of blocking primers for selective PCR amplification in environmental DNA studies.
 
 **Blocking Primer Design Steps**
 
-**1. Choose the mtg of otter and prey**
-
-**2. Generate canditate blocking primer and manual inspect to modify in Bioedit**
-
-**3. Evaluate blocking primer and generate blocking sequence table**
-
-**Potential Prey Species Dataset**<br>
-We manually selected 50 potential prey species commonly found in Thailand, spanning major taxonomic groups relevant to the diet of otters and other carnivores. 
-
-This curated dataset supports:
-- Blocking primer design and evaluation, ensuring primers differentiate host from prey.
-- In silico PCR simulations, testing amplification patterns across taxa.
-- Dietary metabarcoding sensitivity assessments, improving prey detection.
+**1. Choose the mtDNA sequences of host and prey species**<br>
+- Collect representative sequences from target host species
+- Gather diverse prey sequences (vertebrate and invertebrate)
+- Ensure taxonomic coverage relevant to study area
 
 **Host candidate sequence**
 | No. | Scientific Name         | Accession No. | Class     | Order      | Family       | Common Name                  |
@@ -310,5 +302,66 @@ Note: We used our mitochondrial genome (mtg) sequences of otters in Thailand, ba
 | 50  | *Amyda cartilaginea*         | MT039230.1     | Sarcopterygii | Testudines       | Trionychidae   | Asiatic Softshell Turtle   |
 
 Note: These prey species were selected to match ecological relevance, dietary reports, and presence in our surveyed sites.
+
+**2. Sequence Preparation and Alignmentt**
+
+2.1) Create Separate Alignment Files<br>
+<pre><code>host_vertebrate_prey.fasta    # Host + vertebrate prey sequences
+invertebrate_prey.fasta       # Invertebrate prey only (no host)</code></pre>
+
+Note: Separate alignments prevent alignment artifacts between distantly related groups (vertebrate host vs. invertebrate prey) that could introduce excessive gaps and insertion errors.
+
+2.2) Multiple Sequence Alignment<br>
+- Perform high-quality multiple sequence alignment using MAFFT, MUSCLE, or ClustalW
+- Extract specific amplicon regions corresponding to PCR primer sites (12S rRNA, 16S rRNA, or COI)
+<pre><code>12S_host_vertebrate_prey_aligned_trimmed.fasta    # Host + vertebrate 12S-aligned and trimmed sequences
+12S_invertebrate_prey_aligned_trimmed.fasta       # Invertebrate 12S-aligned and trimmed sequences
+16S_host_vertebrate_prey_aligned_trimmed.fasta    # Host + vertebrate 16S-aligned and trimmed sequences
+16S_invertebrate_prey_aligned_trimmed.fasta       # Invertebrate 16S-aligned and trimmed sequences
+COI_host_vertebrate_prey_aligned_trimmed.fasta    # Host + vertebrate COI-aligned and trimmed sequences
+COI_invertebrate_prey_aligned_trimmed.fasta       # Invertebrate COI-aligned and trimmed sequences</code></pre>
+
+2.3) Import forward primer sequences to specific target regions .fasta<br>
+- Map PCR primer binding sites within aligned sequences
+- Identify conserved regions suitable for blocking primer design
+- Analyze sequence variation patterns between host and prey
+
+** Blocking Design Requirements and Criteria**
+
+| **Criterion**           | **Requirement**                            | **Rationale**                                                |
+|-------------------------|--------------------------------------------|--------------------------------------------------------------|
+| **Host Similarity**     | ≤3 mismatches with host                    | Ensures effective blocking of host DNA                      |
+| **3′ End Specificity**  | No mismatches at positions 1 and 3 from 3′ end | Critical for PCR inhibition efficiency                      |
+| **Terminal Base**       | Last base must be C or G                   | Stronger binding, improved blocking stability               |
+| **Ambiguous Bases**     | Minimize Y, R, D, etc.                  | Reduces cross-reactivity with prey species                  |
+| **Length**              | 25–50 nucleotides                          | Optimal binding specificity and stability                   |
+
+2.4) BLAST Verification<br>
+- Submit candidate blocking primers to [NCBI BLAST](https://blast.ncbi.nlm.nih.gov/Blast.cgi).
+- Check that 100% identity matches are restricted to the target host species.
+- Confirm minimal or no similarity to intended prey species.
+- This ensures that the blocking primer selectively inhibits host amplification without interfering with prey DNA detection.
+
+**3. Blocking Primer Evaluation Workflow**
+
+Evaluation Steps
+1. Primer Binding Region Extraction
+
+Purpose: Extract realistic primer binding contexts from reference sequences
+Method: Align derep3 (trimmed amplicons) with derep1 (full-length) sequences
+Output: [primer_length bp + amplicon + primer_length bp] regions
+Rationale: Provides authentic binding context with flanking regions
+
+**Potential Prey Species Dataset**<br>
+We manually selected 50 potential prey species commonly found in Thailand, spanning major taxonomic groups relevant to the diet of otters and other carnivores. 
+
+This curated dataset supports:
+- Blocking primer design and evaluation, ensuring primers differentiate host from prey.
+- In silico PCR simulations, testing amplification patterns across taxa.
+- Dietary metabarcoding sensitivity assessments, improving prey detection.
+
+
+
+
 
 ![image](https://github.com/user-attachments/assets/b9c6669c-bfba-444e-ad14-5cba0c23ac99)
