@@ -377,7 +377,8 @@ Poor (4+ mismatches): Minimal blocking likely
 - Decision Support: Ranked primer performance for selection
 
 **Example Output**
-![blocking_efficiency_analysis](https://github.com/user-attachments/assets/f4357f58-7d31-4e5d-9359-c903e623d437)
+![blocking_efficiency_analysis](https://github.com/user-attachments/assets/dc31d7ff-6c0e-4f69-876e-0d16d3191539)
+
 
 **5. PCR Blocking Primer Analysis Tool**
 **Script File**: [`5_fasta_to_xlsx.sh`](https://github.com/cegconservationgenetics/otter_diet_metabarcoding/blob/main/5_fasta_to_xlsx.sh)
