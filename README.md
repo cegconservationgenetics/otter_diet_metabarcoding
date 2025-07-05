@@ -343,8 +343,8 @@ COI_invertebrate_prey_aligned_trimmed.fasta       # Invertebrate COI-aligned and
 | **Length**              | 25–50 nucleotides                          | Optimal binding specificity and stability                   |
 | **Primer Overlapping**| ≥4 bp overlap with forward primer region from 3′ end  | Enhances competitive binding and ensures primer interference |
 
-**Example Primer Blocking of Primer 12SV5 with OBS1 blocking**<br>
-![image](https://github.com/user-attachments/assets/79d667a5-5d3c-4de7-9551-0e8981202a20)
+**Example Primer Blocking of Primer 12SV5 with OBS1 blocking (Kumari et al., 2019)**<br>
+![image](https://github.com/user-attachments/assets/c1a2539f-0f56-404b-9faa-9755f1c307fe)
 
 
 2.4) BLAST Verification<br>
