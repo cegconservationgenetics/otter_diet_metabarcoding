@@ -237,7 +237,7 @@ This comprehensive workflow covers the design, optimization, and evaluation of b
 - Gather diverse prey sequences (vertebrate and invertebrate)
 - Ensure taxonomic coverage relevant to study area
 
-**Host candidate sequence**
+**Host sequence**
 | No. | Scientific Name         | Accession No. | Class     | Order      | Family       | Common Name                  |
 |-----|--------------------------|---------------|-----------|------------|--------------|------------------------------|
 | 1   | *Aonyx cinereus*         | ACTH*         | Mammalia  | Carnivora  | Mustelidae   | Asian Small-clawed Otter     |
@@ -247,7 +247,14 @@ This comprehensive workflow covers the design, optimization, and evaluation of b
 
 Note: We used our mitochondrial genome (mtg) sequences of otters in Thailand, based on our previous survey of otter haplotype diversity.
 
-**Prey candidate sequence**
+**Potential Prey Species Dataset**<br>
+We manually selected 50 potential prey species commonly found in Thailand, spanning major taxonomic groups relevant to the diet of otters and other carnivores. 
+
+This curated dataset supports:
+- Blocking primer design and evaluation, ensuring primers differentiate host from prey.
+- In silico PCR simulations, testing amplification patterns across taxa.
+- Dietary metabarcoding sensitivity assessments, improving prey detection.
+
 | No. | Scientific Name            | Accession No.  | Class         | Order            | Family         | Common Name                |
 |-----|-----------------------------|----------------|---------------|------------------|----------------|----------------------------|
 | 1   | *Heteropoda venatoria*       | NC_081602.1    | Arachnida     | Araneae          | Sparassidae    | Domestic Huntsman Spider   |
@@ -305,7 +312,7 @@ Note: These prey species were selected to match ecological relevance, dietary re
 
 **2. Sequence Preparation and Alignmentt**
 
-2.1) Create Separate Alignment Files<br>
+2.1) Create Candidate Sequence Files<br>
 <pre><code>host_vertebrate_prey.fasta    # Host + vertebrate prey sequences
 invertebrate_prey.fasta       # Invertebrate prey only (no host)</code></pre>
 
@@ -335,6 +342,7 @@ COI_invertebrate_prey_aligned_trimmed.fasta       # Invertebrate COI-aligned and
 | **Terminal Base**       | Last base must be C or G                   | Stronger binding, improved blocking stability               |
 | **Ambiguous Bases**     | Minimize Y, R, D, etc.                  | Reduces cross-reactivity with prey species                  |
 | **Length**              | 25–50 nucleotides                          | Optimal binding specificity and stability                   |
+| **Primer Overlapping**| ≥4 bp overlap with forward primer region from 3′ end  | Enhances competitive binding and ensures primer interference |
 
 2.4) BLAST Verification<br>
 - Submit candidate blocking primers to [NCBI BLAST](https://blast.ncbi.nlm.nih.gov/Blast.cgi).
@@ -344,24 +352,55 @@ COI_invertebrate_prey_aligned_trimmed.fasta       # Invertebrate COI-aligned and
 
 **3. Blocking Primer Evaluation Workflow**
 
-Evaluation Steps
-1. Primer Binding Region Extraction
+3.1) Primer Binding Region Extraction<br>
+- Purpose: Extract realistic primer binding contexts from reference sequences
+- Method: Align derep3 (trimmed amplicons) with derep1 (full-length) sequences
+- Output: [primer_length bp + amplicon + primer_length bp] regions
+- Rationale: Provides authentic binding context with flanking regions
 
-Purpose: Extract realistic primer binding contexts from reference sequences
-Method: Align derep3 (trimmed amplicons) with derep1 (full-length) sequences
-Output: [primer_length bp + amplicon + primer_length bp] regions
-Rationale: Provides authentic binding context with flanking regions
+3.2) Blocking Efficiency Analysis
+- Mismatch Counting: IUPAC-aware sequence comparison
+- Scoring System:<br>
+Excellent (0-1 mismatches): Strong blocking expected<br>
+Moderate (2-3 mismatches): Partial blocking possible<br>
+Poor (4+ mismatches): Minimal blocking likely
+- Position Analysis: Track where mismatches occur in primer sequence
 
-**Potential Prey Species Dataset**<br>
-We manually selected 50 potential prey species commonly found in Thailand, spanning major taxonomic groups relevant to the diet of otters and other carnivores. 
+3.3) Taxonomic Performance Assessment
+- Species-Level Analysis: Blocking efficiency by genus and family
+- Phylogenetic Patterns: Identify taxonomic groups with poor blocking
+- Geographic Relevance: Focus on locally relevant prey species
 
-This curated dataset supports:
-- Blocking primer design and evaluation, ensuring primers differentiate host from prey.
-- In silico PCR simulations, testing amplification patterns across taxa.
-- Dietary metabarcoding sensitivity assessments, improving prey detection.
+3.4) Comprehensive Reporting
+- Visual Outputs: Blocking efficiency plots and taxonomic summaries
+- Statistical Analysis: Mean/median mismatches across taxonomic groups
+- Decision Support: Ranked primer performance for selection
 
+**Example Output**
+![blocking_efficiency_analysis](https://github.com/user-attachments/assets/f4357f58-7d31-4e5d-9359-c903e623d437)
 
+**5. PCR Blocking Primer Analysis Tool**
+**Script File**: [`xx`](xx)
 
+**Overview**<br>
+This tool converts aligned FASTA files into Excel spreadsheets with BioEdit-style dot plot visualization to analyze PCR blocking primer efficiency against target sequences.
 
+**Usage**
+<pre><code>./5_fasta_to_excel_dotplot.sh input.fasta start_position end_position output_name.xlsx</code></pre>
 
+**Parameters**:
+- input.fasta - Aligned FASTA file (blocking primer must be first sequence)
+- start_position - Starting position of blocking sequence
+- end_position - Ending position of blocking sequence
+- output_name.xlsx - Output Excel file name
+
+**Blocking Efficiency by Mismatches**
+| **Mismatches** | **Color** | **Blocking Efficiency**         |
+|----------------|-----------|----------------------------------|
+| 0-1              | 🟢 Green  | BLOCKED – Perfect match         |
+| 2–3            | 🟡 Yellow | PARTIAL – May be blocked        |
+| >3             | 🔴 Pink   | AMPLIFIED – Will not be blocked |
+| n/a            | ⚪ Gray   | No sequence data                |
+
+**Example Output**
 ![image](https://github.com/user-attachments/assets/b9c6669c-bfba-444e-ad14-5cba0c23ac99)
