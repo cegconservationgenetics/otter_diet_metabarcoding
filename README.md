@@ -225,7 +225,7 @@ For each primer-class combination, the pipeline generates:
 Performance typically decreases from kingdom level (highest) to species level (lowest), which is expected due to increased taxonomic resolution requirements.
 
 ## 4. Blocking Primer Design and Evaluation
-**Script File**: [`xx`](xx)
+**Script File**: [`4_blocking_evaluation.sh`](https://github.com/cegconservationgenetics/otter_diet_metabarcoding/blob/main/4_blocking_evaluation.sh)
 
 **Overview**<br>
 This comprehensive workflow covers the design, optimization, and evaluation of blocking primers for selective PCR amplification in environmental DNA studies.
@@ -380,7 +380,7 @@ Poor (4+ mismatches): Minimal blocking likely
 ![blocking_efficiency_analysis](https://github.com/user-attachments/assets/f4357f58-7d31-4e5d-9359-c903e623d437)
 
 **5. PCR Blocking Primer Analysis Tool**
-**Script File**: [`xx`](xx)
+**Script File**: [`5_fasta_to_xlsx.sh`](https://github.com/cegconservationgenetics/otter_diet_metabarcoding/blob/main/5_fasta_to_xlsx.sh)
 
 **Overview**<br>
 This tool converts aligned FASTA files into Excel spreadsheets with BioEdit-style dot plot visualization to analyze PCR blocking primer efficiency against target sequences.
