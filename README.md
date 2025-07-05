@@ -333,8 +333,7 @@ COI_invertebrate_prey_aligned_trimmed.fasta       # Invertebrate COI-aligned and
 - Identify conserved regions suitable for blocking primer design
 - Analyze sequence variation patterns between host and prey
 
-** Blocking Design Requirements and Criteria**
-
+**Blocking Design Requirements and Criteria**
 | **Criterion**           | **Requirement**                            | **Rationale**                                                |
 |-------------------------|--------------------------------------------|--------------------------------------------------------------|
 | **Host Similarity**     | ≤3 mismatches with host                    | Ensures effective blocking of host DNA                      |
@@ -343,6 +342,10 @@ COI_invertebrate_prey_aligned_trimmed.fasta       # Invertebrate COI-aligned and
 | **Ambiguous Bases**     | Minimize Y, R, D, etc.                  | Reduces cross-reactivity with prey species                  |
 | **Length**              | 25–50 nucleotides                          | Optimal binding specificity and stability                   |
 | **Primer Overlapping**| ≥4 bp overlap with forward primer region from 3′ end  | Enhances competitive binding and ensures primer interference |
+
+**Example Primer Blocking of Primer 12SV5 with OBS1 blocking**<br>
+![image](https://github.com/user-attachments/assets/79d667a5-5d3c-4de7-9551-0e8981202a20)
+
 
 2.4) BLAST Verification<br>
 - Submit candidate blocking primers to [NCBI BLAST](https://blast.ncbi.nlm.nih.gov/Blast.cgi).
