@@ -63,13 +63,13 @@ We use CRABS (Computational Rapid Amplicon Binding Simulator) to perform in sili
 
 **Usage**
 <pre><code># Basic syntax
-python3 crabs_insilico_pcr.py <gene> [options]
+python3 2_crabs_insilico_pcr.py <gene> [options]
 
 # Examples
-python3 crabs_insilico_pcr.py 12s                           # All 12S primers
-python3 crabs_insilico_pcr.py 16s --primer 16S_MarVer3      # Specific 16S primer  
-python3 crabs_insilico_pcr.py coi --mismatch 15.0           # COI with custom mismatch tolerance
-python3 crabs_insilico_pcr.py 12s --plot-only               # Generate plots only</code></pre>
+python3 2_crabs_insilico_pcr.py 12s                           # All 12S primers
+python3 2_crabs_insilico_pcr.py 16s --primer 16S_MarVer3      # Specific 16S primer  
+python3 2_crabs_insilico_pcr.py coi --mismatch 15.0           # COI with custom mismatch tolerance
+python3 2_crabs_insilico_pcr.py 12s --plot-only               # Generate plots only</code></pre>
 
 **Primer candidate**
 |Gene| Target | Primer F | Fw Sequence | Primer R | Re Sequence | Amplicon Size | Reference |
@@ -142,12 +142,12 @@ The goal is to identify effective DNA metabarcoding primers by evaluating their 
 
 **Usage**
 <pre><code># Basic syntax
-./primer_evaluation.sh <gene> [primer_name] [class_name]
+./3_primer_evaluation.sh <gene> [primer_name] [class_name]
 
 # Examples
-./primer_evaluation.sh 12S                           # All 12S primers, all classes
-./primer_evaluation.sh 16S 16S_MarVer3F_MarVer3R     # Specific 16S primer, all classes
-./primer_evaluation.sh COI COI_VF2_FishR1 Reptile    # Specific primer and class</code></pre>
+./3_primer_evaluation.sh 12S                           # All 12S primers, all classes
+./3_primer_evaluation.sh 16S 16S_MarVer3F_MarVer3R     # Specific 16S primer, all classes
+./3_primer_evaluation.sh COI COI_VF2_FishR1 Reptile    # Specific primer and class</code></pre>
 
 **Primer Evaluation Workflow Steps**<br>
 **1. Initial Dereplication (1st derep)**
